@@ -1,1 +1,1 @@
-web: gunicorn flaskprojo.wsgi --log-file -
+web: gunicorn app:app --log-file -
