@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask import render_template
+from flask import abort, current_app, render_template
 
 
 def home_page():
@@ -10,4 +10,14 @@ def home_page():
 
 
 def movies_page():
-    return render_template("movielist.html")
+    db = current_app.config["db"]
+    movies = db.get_movies()
+    return render_template("movielist.html", movies=sorted(movies))
+
+
+def movie_page(movie_key):
+    db = current_app.config["db"]
+    movie = db.get_movie(movie_key)
+    if movie is None:
+        abort(404)
+    return render_template("movie.html", movie=movie)
